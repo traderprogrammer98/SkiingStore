@@ -1,0 +1,6 @@
+@SkiingStore_HostAddress = http://localhost:5088
+
+GET {{SkiingStore_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
