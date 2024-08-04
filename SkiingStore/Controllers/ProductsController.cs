@@ -20,7 +20,13 @@ namespace SkiingStore.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id) 
         {
-            return Ok(await _productRepository.GetAsync(p => p.Id == id));
+            var product = await _productRepository.GetAsync(p => p.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+               
+            return Ok(product);
         }
     }
 }
