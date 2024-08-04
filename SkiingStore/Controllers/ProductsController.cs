@@ -4,9 +4,7 @@ using SkiingStore.Repositories.Interface;
 
 namespace SkiingStore.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductsController : ControllerBase
+    public class ProductsController : BaseApiController
     {
         private readonly IProductRepository _productRepository;
         public ProductsController(IProductRepository productRepository)
@@ -19,7 +17,7 @@ namespace SkiingStore.Controllers
         {
             return Ok(await _productRepository.GetAllAsync());
         }
-        [HttpGet("id:int")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id) 
         {
             return Ok(await _productRepository.GetAsync(p => p.Id == id));

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SkiingStore.Data;
+using SkiingStore.Middlewares;
 using SkiingStore.Repositories.Implementation;
 using SkiingStore.Repositories.Interface;
 
@@ -16,8 +17,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddCors();
 builder.Logging.AddConsole();
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
