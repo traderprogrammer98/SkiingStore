@@ -16,6 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(buil
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddCors();
 builder.Logging.AddConsole();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
