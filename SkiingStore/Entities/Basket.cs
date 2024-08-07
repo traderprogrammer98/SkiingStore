@@ -11,19 +11,19 @@
             {
                 items.Add(new BasketItem { ProductId = product.Id, Quantity = quantity });
             }
-            var item = items.FirstOrDefault(item => item.ProductId == product.Id);
-            if (item != null)
+            else
             {
+
+            var item = items.FirstOrDefault(item => item.ProductId == product.Id);
                 item.Quantity += quantity;
             }
-
         }
         public void RemoveItem(Product product, int quantity)
         {
             var item = items.FirstOrDefault(item => item.ProductId == product.Id);
             if (item == null) return;
             item.Quantity -= quantity;
-            if (item.Quantity < 0)
+            if (item.Quantity <= 0)
             {
                 items.Remove(item);
             }

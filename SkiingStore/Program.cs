@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SkiingStore.Data;
+using SkiingStore.Mappings;
 using SkiingStore.Middlewares;
 using SkiingStore.Repositories.Implementation;
 using SkiingStore.Repositories.Interface;
@@ -14,9 +15,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("http://localhost:4000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
 builder.Logging.AddConsole();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -27,10 +38,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     
 }
-app.UseCors(options =>
-{
-    options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
-});
+app.UseCors("AllowSpecificOrigin");
 
 app.UseHttpsRedirection();
 
