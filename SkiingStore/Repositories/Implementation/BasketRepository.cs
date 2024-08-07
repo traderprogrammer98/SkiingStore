@@ -10,14 +10,17 @@ namespace SkiingStore.Repositories.Implementation
     {
         private readonly AppDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger _logger;
 
-        public BasketRepository(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public BasketRepository(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, ILogger<IBasketRepository> logger)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
         }
         public async Task<Basket> GetBasketAsync()
         {
+            _logger.LogInformation(_httpContextAccessor.HttpContext.Request.Cookies["buyerId"]);
             var basket = await _dbContext.Baskets.Include(b => b.items).ThenInclude(i => i.Product).FirstOrDefaultAsync(b => b.BuyerId == _httpContextAccessor.HttpContext.Request.Cookies["buyerId"]);
             return basket;
         }
