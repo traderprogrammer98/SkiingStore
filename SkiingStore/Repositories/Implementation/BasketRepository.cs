@@ -28,7 +28,7 @@ namespace SkiingStore.Repositories.Implementation
         public async Task<Basket> AddBasketAsync()
         {
             var buyerId = Guid.NewGuid().ToString();
-            var cookieOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(10) };
+            var cookieOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(10), SameSite = SameSiteMode.None, Secure = true };
             _httpContextAccessor.HttpContext.Response.Cookies.Append("buyerId", buyerId, cookieOptions);
             var basket = new Basket { BuyerId = buyerId };
             await _dbContext.Baskets.AddAsync(basket);

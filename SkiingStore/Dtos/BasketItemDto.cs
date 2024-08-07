@@ -13,6 +13,6 @@ namespace SkiingStore.DTOs
         public string Brand { get; set; }
         public string Type { get; set; }
         public int Quantity { get; set; }
-       
+
     }
 }
