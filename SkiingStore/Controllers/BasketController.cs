@@ -47,8 +47,8 @@ namespace SkiingStore.Controllers
                 return NotFound();
             }
             basket.AddItem(product, quantity);
-            var basketDto = _mapper.Map<BasketDto>(basket);
             var result = await _context.SaveChangesAsync() > 0;
+            var basketDto = _mapper.Map<BasketDto>(basket);
             if (result) return CreatedAtRoute(nameof(GetBasket), basketDto);
             return BadRequest(new ProblemDetails { Title = "Problem saving item to basket."});
         }
@@ -69,7 +69,8 @@ namespace SkiingStore.Controllers
             var result = await _context.SaveChangesAsync() > 0;
             if (result)
             {
-                return Ok();
+                var basketDto = _mapper.Map<BasketDto>(basket);
+                return CreatedAtRoute(nameof(GetBasket), basketDto);
             }
             return BadRequest(new ProblemDetails { Title = "item did not remove" });
         }
