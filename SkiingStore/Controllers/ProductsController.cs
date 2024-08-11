@@ -13,9 +13,9 @@ namespace SkiingStore.Controllers
         }
         [HttpGet()]
 
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts([FromQuery]string orderBy, [FromQuery]string search, [FromQuery]string brands, [FromQuery]string types)
         {
-            return Ok(await _productRepository.GetAllAsync());
+            return Ok(await _productRepository.GetAllAsync(orderBy, search, brands, types));
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id) 
