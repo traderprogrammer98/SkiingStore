@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SkiingStore.Data;
+﻿using SkiingStore.Data;
 using SkiingStore.Entities;
 using SkiingStore.Extensions;
 using SkiingStore.Repositories.Interface;
+using SkiingStore.RequestHelpers;
 
 namespace SkiingStore.Repositories.Implementation
 {
@@ -15,10 +15,11 @@ namespace SkiingStore.Repositories.Implementation
             
         }
 
-        public async Task<List<Product>> GetAllAsync(string orderBy, string search, string brands, string types)
+        public async Task<PagedList<Product>> GetAllAsync(ProductParams productParams)
         {
-            var query = _context.Products.AsQueryable().Search(search).Sort(orderBy).Filter(brands, types);
-            return await query.ToListAsync();
+            var query = _context.Products.Search(productParams.Search).Sort(productParams.SortBy).Filter(productParams.Brands, productParams.Types);
+            var products = await PagedList<Product>.ToPagedList(query, productParams.PageNumber, productParams.PageSize);
+            return products;
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using SkiingStore.Entities;
+using SkiingStore.RequestHelpers;
 
 namespace SkiingStore.Repositories.Interface
 {
     public interface IProductRepository : IRepository<Product>
     {
-        Task<List<Product>> GetAllAsync(string orderBy, string search, string brands, string types);
+        Task<PagedList<Product>> GetAllAsync(ProductParams productParams);
     }
 }
