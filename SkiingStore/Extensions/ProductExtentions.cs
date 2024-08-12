@@ -30,12 +30,12 @@ namespace SkiingStore.Extensions
             if (!string.IsNullOrEmpty(brands))
             {
 
-                brandList.AddRange(brands.ToLower().Split(", "));
+                brandList.AddRange(brands.ToLower().Split(","));
             }
             if (!string.IsNullOrEmpty(types))
             {
 
-                typeList.AddRange(types.ToLower().Split(", "));
+                typeList.AddRange(types.ToLower().Split(","));
             }
             query = query.Where(p => brandList.Count == 0 || brandList.Contains(p.Brand));
             query = query.Where(p => typeList.Count == 0 || typeList.Contains(p.Type));
