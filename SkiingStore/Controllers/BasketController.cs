@@ -25,18 +25,17 @@ namespace SkiingStore.Controllers
         [HttpGet(Name = "GetBasket")]
         public async Task<ActionResult<BasketDto>> GetBasket()
         {
-            var basket = await _basketRepository.GetBasketAsync();
+            var basket = await _basketRepository.GetBasketAsync(_basketRepository.GetBuyerId());
             if (basket == null)
             {
                 return NotFound();
             }
-            var basketDto = _mapper.Map<BasketDto>(basket);
-            return basketDto;
+            return _mapper.Map<BasketDto>(basket);
         }
         [HttpPost]
         public async Task<IActionResult> AddItemToBasket(int productId, int quantity)
         {
-            var basket = await _basketRepository.GetBasketAsync();
+            var basket = await _basketRepository.GetBasketAsync(_basketRepository.GetBuyerId());
             if (basket == null)
             {
                 basket = await _basketRepository.AddBasketAsync();
@@ -55,7 +54,7 @@ namespace SkiingStore.Controllers
         [HttpDelete]
         public async Task<IActionResult> RemoveBasketItem(int productId, int quantity)
         {
-            var basket = await _basketRepository.GetBasketAsync();
+            var basket = await _basketRepository.GetBasketAsync(_basketRepository.GetBuyerId());
             if (basket == null)
             {
                 return NotFound();

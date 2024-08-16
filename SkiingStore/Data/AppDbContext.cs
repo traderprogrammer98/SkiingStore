@@ -1,16 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SkiingStore.Entities;
+using SkiingStore.Entities.OrderAggregate;
 
 namespace SkiingStore.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User, Role, int>
     {
-        public AppDbContext(DbContextOptions options) : base(options)
+
+
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            
+ 
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<Basket> Baskets { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -233,6 +240,15 @@ namespace SkiingStore.Data
                     QuantityInStock = 100
                 }
             );
+            modelBuilder.Entity<Role>().HasData(
+                new Role {Id = 1, Name = "Member", NormalizedName = "MEMBER" },
+                new Role {Id = 2,  Name = "Admin", NormalizedName = "ADMIN" }
+                );
+            modelBuilder.Entity<User>().HasOne(u => u.Address)
+                .WithOne()
+                .HasForeignKey<UserAddress>(a => a.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
 
     }
